@@ -12,21 +12,23 @@ import { v4 as uuidv4 } from 'uuid';
 import DatabaseHelper from '@/src/helpers/DatabaseHelper';
 import ServiceModel from '@/src/models/Service';
 import { router } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 
 export default function ServiceList() {
     const { isShowModalOpen, setShowModalOpen } = useModalContext();
     const { isShowMessageOpen, message, isError, setShowMessageOpen } = useMessageContext();
-
+    const { t } = useTranslation(); // Sử dụng hook để lấy hàm dịch
     const dispatch = useDispatch<AppDispatch>();
     const services = useSelector((state: RootState) => state.service.services);
     const loading = useSelector((state: RootState) => state.service.loading);
     const error = useSelector((state: RootState) => state.service.error);
+    const user = useSelector((state: RootState) => state.auth.user);
 
     useEffect(() => {
         dispatch(fetchService());
     }, [dispatch]);
 
-    const renderItem = ({ item }: { item: { name: string, price: string } }) => (
+    const renderItem = ({ item }: { item: ServiceModel }) => (
         <TouchableOpacity style={styles.itemContainer} onPress={() => handleDetail(item.id)}>
             <Text style={styles.itemName} numberOfLines={1} ellipsizeMode="tail">{item.name}</Text>
             <Text style={styles.itemPrice}>{formatCurrency(Number(item.price))}</Text>
@@ -39,14 +41,19 @@ export default function ServiceList() {
 
     const handleTestAdd = async () => {
         const databaseHelper = new DatabaseHelper<ServiceModel>("services");
-        const items = [];
+        const items: ServiceModel[] = [];
+
+        const creatorName = (user.lastName) ? `${user.lastName} ${user.firstName}` : user.email;
 
         for (let i = 1; i <= 15; i++) {
             const id = uuidv4();
             const name = `Service ${i}`; // Example name for the service
             const price = Math.floor(Math.random() * 1000000) + 10000; // Random price between 10,000 VND and 1,000,000 VND
+            const creator = creatorName; // Example creator name
+            const createdAt = new Date(); // Set to current date
+            const updatedAt = new Date(); // Set to current date
 
-            items.push({ id, name, price });
+            items.push({ id, name, price, creator, created_at: createdAt, updated_at: updatedAt });
         }
 
         try {
@@ -73,9 +80,7 @@ export default function ServiceList() {
                     source={require("@/assets/images/logo.png")}
                 />
             </View>
-            {/*<Button title="Add 15 Services" onPress={handleAdd} />*/}
-
-            <Text style={styles.text}>List of Services</Text>
+            <Text style={styles.text}>{t('dashboard.listOfService')}</Text>
 
             {loading && <Text>Loading services...</Text>}
             {error && <Text>Error: {error}</Text>}
@@ -86,7 +91,7 @@ export default function ServiceList() {
                 keyExtractor={item => item.id}
             />
 
-            <MessageToast setShow={setShowMessageOpen} isShow={isShowMessageOpen} message={message} isError={isError} />
+            {/*<MessageToast setShow={setShowMessageOpen} isShow={isShowMessageOpen} message={message} isError={isError} />*/}
             <ModalForm showAlertDialog={isShowModalOpen} handleClose={setShowModalOpen} />
         </View>
     );
@@ -126,5 +131,13 @@ const styles = StyleSheet.create({
     itemPrice: {
         fontSize: 16,
         color: '#888',
+    },
+    itemCreator: {
+        fontSize: 14,
+        color: '#555',
+    },
+    itemDate: {
+        fontSize: 12,
+        color: '#aaa',
     },
 });

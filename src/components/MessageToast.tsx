@@ -37,7 +37,7 @@ export default function ({ isShow, message, isError, setShow }: MessageToastProp
 
             setTimeout(() => {
                 setShow(false)
-            }, 3000);
+            }, 2000);
         }
     }, [isShow]);
 };

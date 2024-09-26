@@ -2,60 +2,57 @@ import { useLocalSearchParams } from 'expo-router';
 import { View, Text, StyleSheet, ActivityIndicator, TextInput, Button, Alert, TouchableOpacity } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import DatabaseHelper from '@/src/helpers/DatabaseHelper';
-import Service from '@/src/models/Service';
+import CustomerModel from '@/src/models/Customer'; // Updated import to use CustomerModel
 import { AppDispatch } from "@/src/store";
 import { useDispatch } from "react-redux";
-import { updateService } from "@/src/store/slices/serviceSlice";
+import { updateCustomer } from "@/src/store/slices/customerSlice"; // Assuming you have a customerSlice
 import { useMessageContext } from "@/src/context/MessageContext";
 
 export default function DetailScreen() {
     const { id } = useLocalSearchParams();
-    const [serviceDetail, setServiceDetail] = useState<Service | null>(null); // State to hold service data
-    const [loading, setLoading] = useState<boolean>(true); // Loading state
-    const [error, setError] = useState<string | null>(null); // Error state
+    const [customerDetail, setCustomerDetail] = useState<CustomerModel | null>(null); // Updated state type
+    const [loading, setLoading] = useState<boolean>(true);
+    const [error, setError] = useState<string | null>(null);
 
     // States for editable form fields
     const [name, setName] = useState<string>('');
-    const [price, setPrice] = useState<string>('');
-    const [creator, setCreator] = useState<string>('');
-    const [updatedAt, setUpdatedAt] = useState<string>('');
+    const [email, setEmail] = useState<string>('');
+    const [phoneNumber, setPhoneNumber] = useState<string>('');
     const [createdAt, setCreatedAt] = useState<string>('');
+    const [updatedAt, setUpdatedAt] = useState<string>('');
 
-    const dbHelper = new DatabaseHelper<Service>('services'); // Adjust to the correct collection/table for services
+    const dbHelper = new DatabaseHelper<CustomerModel>('customers');
     const dispatch: AppDispatch = useDispatch();
     const { setMessage, setShowMessageOpen } = useMessageContext();
 
     useEffect(() => {
-
-        const fetchServiceDetail = async () => {
+        const fetchCustomerDetail = async () => {
             try {
                 setLoading(true);
+                const customer = await dbHelper.get(id as string); // Ensure id is string
 
-                const service = await dbHelper.get(id);
+                if (customer) {
+                    const created = convertTimestampToDate(customer.createdAt);
+                    const updated = convertTimestampToDate(customer.updatedAt);
 
-                if (service) {
-
-                    const created = convertTimestampToDate(service.created_at);
-                    const updated = convertTimestampToDate(service.updated_at);
-
-                    setServiceDetail(service);
-                    setName(service.name);
-                    setPrice(service.price.toString());
-                    setCreator(service.creator);
+                    setCustomerDetail(customer);
+                    setName(customer.name);
+                    setEmail(customer.email);
+                    setPhoneNumber(customer.phoneNumber);
                     setCreatedAt(created);
                     setUpdatedAt(updated);
                 } else {
-                    setError('Service not found');
+                    setError('Customer not found');
                 }
             } catch (error) {
-                setError('Error fetching service details');
+                setError('Error fetching customer details');
             } finally {
                 setLoading(false);
             }
         };
 
         if (id) {
-            fetchServiceDetail(); // Fetch details if id is available
+            fetchCustomerDetail();
         }
     }, [id]);
 
@@ -63,8 +60,9 @@ export default function DetailScreen() {
         return new Date(timestamp.seconds * 1000 + Math.floor(timestamp.nanoseconds / 1000000)).toString();
     };
 
+
     const handleUpdate = async () => {
-        if (!serviceDetail) return;
+        if (!customerDetail) return;
 
         try {
             // Validation for name
@@ -74,40 +72,40 @@ export default function DetailScreen() {
                 return;
             }
 
-            const regexText = /^[a-zA-Z\s]+$/;
-            const formattedName = name.replace(/\s{2,}/g, ' ').trim();
-            if (!regexText.test(formattedName)) {
-                setMessage("Name must contain only letters (a-z or A-Z) and spaces between words", true);
+            // Validation for email
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                setMessage("Email must be a valid email address", true);
                 setShowMessageOpen(true);
                 return;
             }
 
-            // Validation for price
-            const priceValue = parseFloat(price);
-            if (isNaN(priceValue) || priceValue <= 0) {
-                setMessage("Price must be a valid number greater than 0", true);
+            // Validation for phone number
+            if (phoneNumber.trim() === "") {
+                setMessage("Phone number is required", true);
                 setShowMessageOpen(true);
                 return;
             }
 
             setLoading(true);
 
-            // Update service with new values
+            // Update customer with new values
             await dbHelper.update(id as string, {
-                ...serviceDetail,
-                name: formattedName,
-                price: priceValue,
+                ...customerDetail,
+                name,
+                email,
+                phoneNumber,
+                updatedAt: new Date(), // Update the timestamp for when the customer was last updated
             });
 
-            setMessage('Service updated successfully!', false);
-            setShowMessageOpen(true);
+            Alert.alert("Success", "Customer updated successfully!");
 
-            // Re-fetch the updated service data
-            const updatedService = await dbHelper.get(id as string);
-            setServiceDetail(updatedService);
-            dispatch(updateService(updatedService)); // Dispatch the updated service to the Redux store
+            // Re-fetch the updated customer data
+            const updatedCustomer = await dbHelper.get(id as string);
+            setCustomerDetail(updatedCustomer);
+            dispatch(updateCustomer(updatedCustomer)); // Dispatch the updated customer to the Redux store
         } catch (error) {
-            setError('Error updating service');
+            setError('Error updating customer');
         } finally {
             setLoading(false);
         }
@@ -117,7 +115,7 @@ export default function DetailScreen() {
         return (
             <View style={styles.container}>
                 <ActivityIndicator size="large" color="#0000ff" />
-                <Text>Loading service details...</Text>
+                <Text>Loading customer details...</Text>
             </View>
         );
     }
@@ -132,10 +130,10 @@ export default function DetailScreen() {
 
     return (
         <View style={styles.container}>
-            {serviceDetail ? (
+            {customerDetail ? (
                 <View style={styles.detailContainer}>
-                    <Text style={styles.label}>Service ID:</Text>
-                    <Text style={styles.value}>{serviceDetail.id}</Text>
+                    <Text style={styles.label}>Customer ID:</Text>
+                    <Text style={styles.value}>{customerDetail.id}</Text>
 
                     <Text style={styles.label}>Name:</Text>
                     <TextInput
@@ -144,19 +142,18 @@ export default function DetailScreen() {
                         onChangeText={setName}
                     />
 
-                    <Text style={styles.label}>Price:</Text>
+                    <Text style={styles.label}>Email:</Text>
                     <TextInput
                         style={styles.input}
-                        value={price}
-                        onChangeText={setPrice}
-                        keyboardType="numeric" // Numeric input for price
+                        value={email}
+                        onChangeText={setEmail}
                     />
 
-                    <Text style={styles.label}>Creator:</Text>
+                    <Text style={styles.label}>Phone Number:</Text>
                     <TextInput
-                        readOnly={true}
                         style={styles.input}
-                        value={creator}
+                        value={phoneNumber}
+                        onChangeText={setPhoneNumber}
                     />
 
                     <Text style={styles.label}>Created At:</Text>
@@ -173,10 +170,12 @@ export default function DetailScreen() {
                         value={updatedAt}
                     />
 
-                    <TouchableOpacity style={{backgroundColor: '#00ab55', padding: 10}} onPress={handleUpdate}><Text style={{color: 'white', textAlign: 'center', fontWeight: 'bold'}}>Update</Text></TouchableOpacity>
+                    <TouchableOpacity style={{backgroundColor: '#00ab55', padding: 10}} onPress={handleUpdate}>
+                        <Text style={{color: 'white', textAlign: 'center', fontWeight: 'bold'}}>Update</Text>
+                    </TouchableOpacity>
                 </View>
             ) : (
-                <Text style={styles.errorText}>No service details found</Text>
+                <Text style={styles.errorText}>No customer details found</Text>
             )}
         </View>
     );

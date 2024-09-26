@@ -1,0 +1,41 @@
+{
+  "dashboard": {
+    "dashboardHeaderTitle": "Trang chủ",
+    "listOfService": "Danh sách dịch vụ"
+  },
+  "customer": {
+    "customerHeaderTitle": "Khách hàng",
+    "listOfCustomer": "Danh sách khách hàng"
+  },
+  "settings": {
+    "settingHeaderTitle": "Cài đặt",
+    "editProfile": "Chỉnh sửa hồ sơ",
+    "enableNotifications": "Bật thông báo",
+    "darkMode": "Chế độ tối",
+    "logout": "Đăng xuất"
+  },
+  "aboutUs": {
+    "aboutUsHeaderTitle": "Về chúng tôi",
+    "title": "Giới thiệu về chúng tôi",
+    "team": {
+      "subtitle": "Đội ngũ của chúng tôi",
+      "description": "Chúng tôi là một nhóm những người đam mê công nghệ và đổi mới. Với kinh nghiệm đa dạng trong phát triển phần mềm, thiết kế giao diện người dùng và tiếp thị kỹ thuật số, chúng tôi cam kết cung cấp những giải pháp tốt nhất cho khách hàng của mình."
+    },
+    "mission": {
+      "subtitle": "Sứ mệnh của chúng tôi",
+      "description": "Sứ mệnh của chúng tôi là mang lại giá trị cho khách hàng thông qua các sản phẩm và dịch vụ chất lượng cao. Chúng tôi tin rằng công nghệ có thể cải thiện cuộc sống hàng ngày, và chúng tôi làm việc không ngừng để hiện thực hóa điều đó."
+    },
+    "coreValues": {
+      "subtitle": "Giá trị cốt lõi",
+      "description": "Chúng tôi đặt ra các giá trị cốt lõi như sự trung thực, sự đổi mới và cam kết với chất lượng. Chúng tôi luôn lắng nghe ý kiến của khách hàng và cải thiện từng ngày."
+    },
+    "contact": {
+      "subtitle": "Liên hệ với chúng tôi",
+      "description": "Nếu bạn có bất kỳ câu hỏi hoặc ý kiến nào, đừng ngần ngại liên hệ với chúng tôi qua email support@yourcompany.com hoặc theo dõi chúng tôi trên mạng xã hội.",
+      "zaloSubtitle": "Liên hệ qua Zalo",
+      "zaloDescription": "Bạn có thể liên hệ qua: +123456789",
+      "phoneSubtitle": "Liên hệ qua điện thoại",
+      "phoneDescription": "Gọi vào số: +987654321"
+    }
+  }
+}

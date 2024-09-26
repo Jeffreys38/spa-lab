@@ -37,10 +37,21 @@ export default function AppLayout() {
                             headerShown: false
                         }} />
                         <Stack.Screen name="detail/[id]" options={{
-                            title: "Detail User",
+                            title: "Detail Service",
                             headerShown: true,
                             headerStyle: {
-                                backgroundColor: 'black',
+                                backgroundColor: '#00ab55',
+                            },
+                            headerTitleStyle: {
+                                color: 'white',
+                            },
+                            headerTintColor: 'white'
+                        }} />
+                        <Stack.Screen name="customer/[id]" options={{
+                            title: "Detail Customeer",
+                            headerShown: true,
+                            headerStyle: {
+                                backgroundColor: '#00ab55',
                             },
                             headerTitleStyle: {
                                 color: 'white',

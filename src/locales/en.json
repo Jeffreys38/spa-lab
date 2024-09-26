@@ -1,0 +1,41 @@
+{
+  "dashboard": {
+    "dashboardHeaderTitle": "Home",
+    "listOfService": "List Of Services"
+  },
+  "customer": {
+    "customerHeaderTitle": "Customer",
+    "listOfCustomer": "List Of Customer"
+  },
+  "settings": {
+    "settingHeaderTitle": "Settings",
+    "editProfile": "Edit Profile",
+    "enableNotifications": "Enable Notifications",
+    "darkMode": "Dark Mode",
+    "logout": "Logout"
+  },
+  "aboutUs": {
+    "aboutUsHeaderTitle": "About Us",
+    "title": "Overview About Us",
+    "team": {
+      "subtitle": "Our Team",
+      "description": "We are a group of technology and innovation enthusiasts. With diverse experience in software development, user interface design, and digital marketing, we are committed to providing the best solutions for our clients."
+    },
+    "mission": {
+      "subtitle": "Our Mission",
+      "description": "Our mission is to deliver value to customers through high-quality products and services. We believe that technology can improve everyday life, and we work tirelessly to realize this."
+    },
+    "coreValues": {
+      "subtitle": "Core Values",
+      "description": "We uphold core values such as honesty, innovation, and commitment to quality. We always listen to customer feedback and strive to improve every day."
+    },
+    "contact": {
+      "subtitle": "Contact Us",
+      "description": "If you have any questions or comments, feel free to reach out to us at support@yourcompany.com or follow us on social media.",
+      "zaloSubtitle": "Contact via Zalo",
+      "zaloDescription": "You can reach us on Zalo at: +123456789",
+      "phoneSubtitle": "Contact via Phone",
+      "phoneDescription": "Call us at: +987654321"
+    }
+  }
+}
