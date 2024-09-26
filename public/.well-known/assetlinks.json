@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.jeffrey0308.firebaseauthlab",
+      "sha256_cert_fingerprints": [
+        "85:CB:60:29:C8:35:58:5F:88:01:36:4A:59:64:9C:6C:11:27:EB:8C:99:26:69:82:29:0E:19:C2:6E:92:47:2F"
+      ]
+    }
+  }
+]

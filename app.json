@@ -1,0 +1,72 @@
+{
+  "expo": {
+    "name": "firebase-auth-lab",
+    "slug": "firebase-auth-lab",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "scheme": "firebase",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "image": "./assets/images/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "googleServicesFile": "GoogleService-Info.plist",
+      "bundleIdentifier": "com.jeffrey0308.firebaseauthlab"
+    },
+    "android": {
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "autoVerify": true,
+          "data": [
+            {
+              "scheme": "https",
+              "host": "app.firebase.io",
+              "pathPrefix": "/app"
+            }
+          ],
+          "category": ["BROWSABLE", "DEFAULT"]
+        }
+      ],
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "googleServicesFile": "google-services.json",
+      "package": "com.jeffrey0308.firebaseauthlab",
+      "associatedDomains": [
+        "applinks:firebaseauthlab"
+      ]
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "static",
+      "favicon": "./assets/images/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      "@react-native-google-signin/google-signin",
+      [
+        "@react-native-google-signin/google-signin",
+        {
+          "iosUrlScheme": "com.googleusercontent.apps.891108640906-q1lqic3j04ji975eqdje39t1fkgil2tc"
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "f7e9ea2f-a562-4b50-a94d-e5b740597e85"
+      }
+    }
+  }
+}
